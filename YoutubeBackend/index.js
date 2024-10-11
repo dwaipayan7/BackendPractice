@@ -8,7 +8,8 @@ app.use(express.urlencoded({extended: true}));
 app.use(express.static(path.join(__dirname,"public")));
 
 app.get('/', (req, res) =>{
-    res.send("Welcome");
+    // res.send("Welcome");
+    res.render("index");
     console.log("Done");
 });
 
