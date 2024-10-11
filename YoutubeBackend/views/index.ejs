@@ -9,14 +9,16 @@
 <body>
     <!-- <p1>Dwaipayan</p1> -->
      <div class="main w-full min-h-screen bg-zinc-900">
-        <div class="from p-10">
+        <div class="from p-10 text-white">
             <form action="">
-                <input class="block w-full rounded-md px-5 py-2 bg-zinc-800" type="text" placeholder="Title goes">
-                <textarea class="block w-full rounded-md mt-2 px-5 py-2 resize-none bg-zinc-800" placeholder="Write your task details here "></textarea>
-                <input class="mt-2" type="submit" value="Create Task">
+                <input class="block w-full rounded-md outline-none px-5 py-2 bg-zinc-800" type="text" placeholder="Title goes">
+                <textarea class="block w-full rounded-md outline-none mt-2 px-5 py-2 resize-none bg-zinc-800" placeholder="Write your task details here "></textarea>
+                <input class="mt-2 bg-blue-600 px-5 py-2 rounded-md" type="submit" value="Create Task">
             </form>
         </div>
-        <div class="tasks"></div>
+        <div class="tasks p-10">
+            <div class="task w-72 px-3 py-4 bg-zinc-800 rounded-md"></div>
+        </div>
      </div>
 </body>
 </html>
