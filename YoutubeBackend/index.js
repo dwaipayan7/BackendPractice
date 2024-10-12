@@ -12,10 +12,11 @@ app.get('/', (req, res) =>{
     // res.send("Welcome");
 
     fs.readdir(`./files`, (err, files) =>{
-        console.log(files);
+        // console.log(files);
+        res.render("index");
     })
 
-    res.render("index");
+
     console.log("Done");
 });
 

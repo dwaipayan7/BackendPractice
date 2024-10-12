@@ -17,6 +17,21 @@
             </form>
         </div>
         <div class="tasks flex gap-3 flex wrap p-10">
+
+            <% if (files.length > 0) { %>
+                <% files.forEach(function (val) { %>
+                    <div class="task w-72 px-3 py-4 bg-zinc-800 rounded-md">
+                        <h1 class="text-white text-3xl tracking-tighter"><%= val.title %></h1>
+                        <p class="text-zinc-400 mt-2"><%= val.details %></p>
+                        <a href="#" class="text-blue-500 inline-block mt-3">Read More</a>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <h3 class="text-zinc-600">No Tasks Yet</h3>
+            <% } %>
+
+        
+
             <div class="task w-72 hidden px-3 py-4 bg-zinc-800 rounded-md">
                 <h1 class="text-white text-3xl tracking-tighter">Some tasks goes here</h1>
                 <a href="" class="text-blue-500 inline-block mt-3">Read More</a>
