@@ -39,24 +39,28 @@
 // console.log(fs)
 
 
-const notes = require('./notes.js');
-var _ = require('lodash')
+// const notes = require('./notes.js');
+// var _ = require('lodash')
 
 
-var data = ['person', 'person', 1, 1, 2, 1, 3, 'name', 'age', '2'];
+// var data = ['person', 'person', 1, 1, 2, 1, 3, 'name', 'age', '2'];
 
-var filter = _.uniq(data);
-console.log(filter)
+// var filter = _.uniq(data);
+// console.log(filter)
 
-// console.log(_.isString('Dwaipayan')) -->true
-console.log(_.isString(3)) // --> false
+// // console.log(_.isString('Dwaipayan')) -->true
+// console.log(_.isString(3)) // --> false
 
-console.log("Server file is available")
+// console.log("Server file is available")
 
-var age = notes.age;
+// var age = notes.age;
 
-var result = notes.addNumber(age+14, 10);
+// var result = notes.addNumber(age+14, 10);
 
-console.log(result)
+// console.log(result)
 
-console.log(age+14);
+// console.log(age+14);
+
+
+
+
