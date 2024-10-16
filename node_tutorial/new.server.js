@@ -10,7 +10,7 @@ app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 
 app.get('/', (req, res)=>{
-    res.send("Dwaipayan");
+    res.send("Welcome to my hotel ! how can i help you? ");
 });
 
 app.get('/chicken', (req, res)=>{
@@ -31,6 +31,12 @@ app.get('/idli', (req, res)=>{
     // res.send("South Indian IDLI");
 });
 
+
+app.post('/items', (req, res) =>{
+    res.send("Fetched");
+})
+
+
 app.post("/", (req, res) => {
         let num1 =
             Number(req.body.num1);
@@ -40,6 +46,7 @@ app.post("/", (req, res) => {
         let result = num1 + num2;
         res.send("Addition - " + result);
         console.log(req.body)
+        console.log(result)
         // console.log(res)
     });
 
