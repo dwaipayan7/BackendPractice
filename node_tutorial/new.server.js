@@ -134,7 +134,21 @@ app.get('/menu', async(req, res)=>{
     }
 });
 
-
+app.get('/person/:workType', async(req, res)=>{
+    try {
+        
+        const workType = req.params.workType;
+        if(workType == 'chef' || workType == 'manager' || workType == 'waiter'){
+            const response = await Person.find({work:workType});
+            res.status(200).json(response);
+        }else{
+            res.status(400).json({error: "Invalid Work Type"});
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({error: "Internal  Server Error"});
+    }
+})
 
 
 app.listen(PORT, ()=>{
