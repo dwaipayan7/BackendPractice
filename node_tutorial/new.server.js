@@ -66,14 +66,15 @@ const MenuItem = require('./models/MenuItems');
 
 
 app.get('/', (req, res)=>{
-    res.send("Welcome to my hotel ! how can i help you? ");
+    res.send("Welcome to our hotel");
 });
 
 
 const personRoutes = require('./router/personRouter');
-app.use('/person',personRoutes);
-
 const menuRoutes = require('./router/menuRoutes')
+
+
+app.use('/person',personRoutes);
 app.use('/menu',menuRoutes)
 
 

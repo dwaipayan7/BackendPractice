@@ -53,6 +53,34 @@ router.get('/:workType', async(req, res)=>{
         console.log(error);
         res.status(500).json({error: "Internal  Server Error"});
     }
+
+
+    router.put('/:id', async(req, res)=>{
+  
+        try {
+            const personId = req.params.id;
+            const updatedPersonData = req.body;
+    
+            const response = await Person.findByIdAndUpdate(personId, updatedPersonData,{
+                new:true,
+                runValidators: true
+            });
+
+            if (!response) {
+                return res.status(404).json({error: 'Person Not Found'});
+
+            }
+    
+            console.log('Data Updated');
+            res.status(200).json(response);
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({error: "Internal Server Error"});
+        }
+
+    });
+
+
 });
 
 module.exports = router

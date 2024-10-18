@@ -33,4 +33,24 @@ router.get('/', async(req, res)=>{
     }
 });
 
+router.get('/:taste', async(req,res)=>{
+
+    try {
+        
+        const taste = req.params.taste;
+        if(['sweet', 'spicy', 'sour'].includes(taste)){
+            const response = await MenuItem.find({taste:taste});
+            console.log('Menu items fetched: ',taste);
+            res.status(200).json(response);
+        }else{
+            res.status(400).json({error: 'Invalid taste'});
+        }
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({error: "Internal  Server Error"});
+    }
+
+});
+
 module.exports = router;
