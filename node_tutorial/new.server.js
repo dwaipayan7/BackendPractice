@@ -61,6 +61,7 @@ app.use(bodyParser.json())
 // db.connect();
 
 const Person = require('./models/Person');
+const MenuItem = require('./models/MenuItems');
 
 
 
@@ -101,6 +102,36 @@ app.get('/person', async(req, res)=>{
         res.status(500).json({error:"Internal Server Error"});
     }
 
+});
+
+app.post('/menu', async(req, res)=>{
+
+    try {
+        
+        const data = req.body
+        const newMenu = new MenuItem(data);
+        const response = await newMenu.save();
+        res.status(201).json({message:  "Menu Item Added", response});
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({error: 'Internal  Server Error'});
+
+    }
+
+});
+
+app.get('/menu', async(req, res)=>{
+    try {
+        
+        const data = await MenuItem.find();
+        console.log("Data Fetched");
+        res.status(200).json(data);
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({error: "Internal  Server Error"});
+
+    }
 });
 
 
