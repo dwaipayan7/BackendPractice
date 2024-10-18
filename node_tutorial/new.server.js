@@ -52,15 +52,15 @@ const { size } = require('lodash');
 const app = express();
 const bodyParser = require('body-parser')
 const PORT = 3000
-const db = require('./config/db')
+const connectDB = require('./config/db')
 
 
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 
 // db.connect();
+connectDB();
 
-const Person = require('./models/Person');
 const MenuItem = require('./models/MenuItems');
 
 
@@ -69,86 +69,12 @@ app.get('/', (req, res)=>{
     res.send("Welcome to my hotel ! how can i help you? ");
 });
 
-app.post('/person', async(req, res) =>{
 
-    try {
-        
-        const data = req.body;
+const personRoutes = require('./router/personRouter');
+app.use('/person',personRoutes);
 
-        const newPerson = new Person(data);
-        // newPerson.name = data.name;
-    
-       const response = await newPerson.save();
-       res.status(201).json(response);
-       console.log('Data Saved');
-
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({error:"Internal Server Error"});
-    }
-
-});
-
-app.get('/person', async(req, res)=>{
-
-    try {
-        
-        const response = await Person.find();
-        console.log('Data Fetched');
-        res.status(200).json(response);
-
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({error:"Internal Server Error"});
-    }
-
-});
-
-app.post('/menu', async(req, res)=>{
-
-    try {
-        
-        const data = req.body
-        const newMenu = new MenuItem(data);
-        const response = await newMenu.save();
-        res.status(201).json({message:  "Menu Item Added", response});
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({error: 'Internal  Server Error'});
-
-    }
-
-});
-
-app.get('/menu', async(req, res)=>{
-    try {
-        
-        const data = await MenuItem.find();
-        console.log("Data Fetched");
-        res.status(200).json(data);
-
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({error: "Internal  Server Error"});
-
-    }
-});
-
-app.get('/person/:workType', async(req, res)=>{
-    try {
-        
-        const workType = req.params.workType;
-        if(workType == 'chef' || workType == 'manager' || workType == 'waiter'){
-            const response = await Person.find({work:workType});
-            res.status(200).json(response);
-        }else{
-            res.status(400).json({error: "Invalid Work Type"});
-        }
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({error: "Internal  Server Error"});
-    }
-})
+const menuRoutes = require('./router/menuRoutes')
+app.use('/menu',menuRoutes)
 
 
 app.listen(PORT, ()=>{

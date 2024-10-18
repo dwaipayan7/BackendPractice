@@ -1,13 +1,22 @@
 const mongoose = require('mongoose')
 
-const mongoURL = 'mongodb://localhost:27017/hotel';
+const  connectDB = async () => {
+  try {
+    const mongoURL = 'mongodb://localhost:27017/hotel';
 
-mongoose.connect(mongoURL);
+    mongoose.connect(mongoURL);
+    
+    const db = mongoose.connection;
+    
+    db.on('connected', ()=>{
+        console.log("Connected to MongoDB server");
+    });
+  } catch (error) {
+    console.log("Error Server");
+  }
+}
 
-const db = mongoose.connection;
 
-db.on('connected', ()=>{
-    console.log("Connected to MongoDB server");
-});
 
-module.exports = db;
+
+module.exports = connectDB;
