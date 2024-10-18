@@ -36,6 +36,17 @@
 //         // console.log(res)
 //     });
 
+//Callback Previous
+// (error, savedPerson) =>{
+//     if (error) {
+//         console.log('Error on saving person',error);
+//         res.status(500).json({error: "Internal server error"});
+//     }else{
+//         console.log('Data saved successfully');
+//         res.status(201).json(savedPerson);
+//     }
+// }
+
 const express = require('express');
 const { size } = require('lodash');
 const app = express();
@@ -49,10 +60,50 @@ app.use(bodyParser.json())
 
 // db.connect();
 
+const Person = require('./models/Person');
+
+
 
 app.get('/', (req, res)=>{
     res.send("Welcome to my hotel ! how can i help you? ");
 });
+
+app.post('/person', async(req, res) =>{
+
+    try {
+        
+        const data = req.body;
+
+        const newPerson = new Person(data);
+        // newPerson.name = data.name;
+    
+       const response = await newPerson.save();
+       res.status(201).json(response);
+       console.log('Data Saved');
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({error:"Internal Server Error"});
+    }
+
+});
+
+app.get('/person', async(req, res)=>{
+
+    try {
+        
+        const response = await Person.find();
+        console.log('Data Fetched');
+        res.status(200).json(response);
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({error:"Internal Server Error"});
+    }
+
+});
+
+
 
 
 app.listen(PORT, ()=>{
