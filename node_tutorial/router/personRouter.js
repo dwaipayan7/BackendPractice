@@ -80,6 +80,22 @@ router.get('/:workType', async(req, res)=>{
 
     });
 
+    router.delete('/:id', async (req, res) => {
+        try {
+          const personId = req.params.id;
+          const response = await Person.findByIdAndDelete(personId);
+      
+          if (!response) {
+            return res.status(404).json({ error: 'Person Not Found' });
+          }
+      
+          console.log("Data Deleted");
+          res.status(200).json({ message: 'Person Deleted Successfully' });
+        } catch (error) {
+          console.error(error);
+          res.status(500).json({ error: 'Invalid Deletion' });
+        }
+      });
 
 });
 
