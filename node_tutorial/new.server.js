@@ -51,9 +51,12 @@ const express = require('express');
 const { size } = require('lodash');
 const app = express();
 const bodyParser = require('body-parser')
-const PORT = 3000
 const connectDB = require('./config/db')
 
+require('dotenv').config();
+// config()
+
+const PORT = process.env.PORT || 4000;
 
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
@@ -71,7 +74,8 @@ app.get('/', (req, res)=>{
 
 
 const personRoutes = require('./router/personRouter');
-const menuRoutes = require('./router/menuRoutes')
+const menuRoutes = require('./router/menuRoutes');
+const { config } = require('dotenv');
 
 
 app.use('/person',personRoutes);

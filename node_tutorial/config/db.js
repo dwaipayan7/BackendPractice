@@ -1,10 +1,12 @@
-const mongoose = require('mongoose')
+const { config } = require('dotenv');
+const mongoose = require('mongoose');
+config()
 
 const  connectDB = async () => {
   try {
 
 
-    const mongoURL = 'mongodb+srv://biswastatay73:zRjQlTISkvIHdSe3@cluster0.7a0dj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0/hotel';
+    const mongoURL = process.env.MONGO_URL;
 
     // mongodb://localhost:27017/hotel
 
