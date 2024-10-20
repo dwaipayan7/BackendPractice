@@ -2,7 +2,11 @@ const mongoose = require('mongoose')
 
 const  connectDB = async () => {
   try {
-    const mongoURL = 'mongodb://localhost:27017/hotel';
+
+
+    const mongoURL = 'mongodb+srv://biswastatay73:zRjQlTISkvIHdSe3@cluster0.7a0dj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0/hotel';
+
+    // mongodb://localhost:27017/hotel
 
     mongoose.connect(mongoURL);
     
