@@ -69,7 +69,7 @@ app.use(bodyParser.json())
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy;
 
-
+//Configure Local Strategy
 app.use(new LocalStrategy(async(USERNAME, password, done) =>{
 
     try {
