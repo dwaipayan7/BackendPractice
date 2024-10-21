@@ -52,23 +52,65 @@ const { size } = require('lodash');
 const app = express();
 const bodyParser = require('body-parser')
 const connectDB = require('./config/db')
+const Person = require('./models/Person')
+
 
 require('dotenv').config();
 // config()
 
 const PORT = process.env.PORT || 4000;
+// db.connect();
+connectDB();
+
 
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 
-// db.connect();
-connectDB();
+const passport = require('passport')
+const LocalStrategy = require('passport-local').Strategy;
+
+
+app.use(new LocalStrategy(async(USERNAME, password, done) =>{
+
+    try {
+        console.log('Received Credential: ',USERNAME, password);
+
+        const user = Person.findOne({username: USERNAME});
+
+        if (!user) {
+            return done(null, false, {message: 'Incorrect username!'});
+        }
+        const isPasswordMatch = user.password == password ? true : false;
+
+        if (isPasswordMatch) {
+            return done(null, user);
+        }else{
+            return done(null, false, {message: 'Incorrect password!'});
+        }
+       
+
+
+    } catch (error) {
+        return done(error);
+    }
+
+}));
+
 
 const MenuItem = require('./models/MenuItems');
 
+//Middleware Function
+
+const logRequest = (req, res, next) => {
+    console.log(`${new Date().toLocaleString()} - Request Made to: ${req.url}`);
+    next();
+}
 
 
-app.get('/', (req, res)=>{
+app.use(logRequest) // Access by every area Middleware
+
+
+app.get('/',logRequest ,(req, res)=>{
     res.send("Welcome to our hotel");
 });
 
