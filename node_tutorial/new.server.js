@@ -52,7 +52,7 @@ const { size } = require('lodash');
 const app = express();
 const bodyParser = require('body-parser')
 const connectDB = require('./config/db')
-const Person = require('./models/Person')
+
 
 
 require('dotenv').config();
@@ -70,12 +70,12 @@ const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy;
 
 //Configure Local Strategy
-app.use(new LocalStrategy(async(USERNAME, password, done) =>{
+passport.use(new LocalStrategy(async(USERNAME, password, done) =>{
 
     try {
         console.log('Received Credential: ',USERNAME, password);
 
-        const user = Person.findOne({username: USERNAME});
+        const user = await Person.findOne({username: USERNAME});
 
         if (!user) {
             return done(null, false, {message: 'Incorrect username!'});
@@ -110,7 +110,7 @@ const logRequest = (req, res, next) => {
 app.use(logRequest) // Access by every area Middleware
 
 
-app.get('/',logRequest ,(req, res)=>{
+app.get('/' ,(req, res)=>{
     res.send("Welcome to our hotel");
 });
 
