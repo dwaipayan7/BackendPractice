@@ -48,82 +48,46 @@
 // }
 
 const express = require('express');
-const { size } = require('lodash');
 const app = express();
-const bodyParser = require('body-parser')
-const connectDB = require('./config/db')
+const bodyParser = require('body-parser');
+const connectDB = require('./config/db');
+require('dotenv').config();  // Ensure .env variables are loaded
+const passport = require('./auth/auth')
 
 
-
-require('dotenv').config();
-// config()
-
+// Connect to the database
 const PORT = process.env.PORT || 4000;
-// db.connect();
 connectDB();
 
+// Body parser middleware
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
-app.use(bodyParser.urlencoded({extended: true}))
-app.use(bodyParser.json())
-
-const passport = require('passport')
-const LocalStrategy = require('passport-local').Strategy;
-
-//Configure Local Strategy
-passport.use(new LocalStrategy(async(USERNAME, password, done) =>{
-
-    try {
-        console.log('Received Credential: ',USERNAME, password);
-
-        const user = await Person.findOne({username: USERNAME});
-
-        if (!user) {
-            return done(null, false, {message: 'Incorrect username!'});
-        }
-        const isPasswordMatch = user.password == password ? true : false;
-
-        if (isPasswordMatch) {
-            return done(null, user);
-        }else{
-            return done(null, false, {message: 'Incorrect password!'});
-        }
-       
-
-
-    } catch (error) {
-        return done(error);
-    }
-
-}));
-
-
-const MenuItem = require('./models/MenuItems');
-
-//Middleware Function
-
+// Middleware function to log requests
 const logRequest = (req, res, next) => {
-    console.log(`${new Date().toLocaleString()} - Request Made to: ${req.url}`);
+    console.log(`${new Date().toLocaleString()} - Request made to: ${req.url}`);
     next();
-}
+};
 
+// Initialize Passport
+app.use(passport.initialize());
+app.use(logRequest); // Access by every area Middleware
 
-app.use(logRequest) // Access by every area Middleware
+// Authentication middleware using Passport
+const localAuthMiddleware = passport.authenticate('local', { session: false });
 
-
-app.get('/' ,(req, res)=>{
+// Routes
+app.get('/', (req, res) => {
     res.send("Welcome to our hotel");
 });
 
-
 const personRoutes = require('./router/personRouter');
 const menuRoutes = require('./router/menuRoutes');
-const { config } = require('dotenv');
 
+app.use('/person', personRoutes);
+app.use('/menu', menuRoutes);
 
-app.use('/person',personRoutes);
-app.use('/menu',menuRoutes)
-
-
-app.listen(PORT, ()=>{
-    console.log(`Server Running in ${PORT}`)
+// Start server
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
 });
