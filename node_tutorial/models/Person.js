@@ -21,7 +21,7 @@ const personSchema = new mongoose.Schema({
     email:{
         type:String,
         required: true,
-        unique: true
+        unique: true,  
     },
     address:{
         type: String
@@ -31,15 +31,16 @@ const personSchema = new mongoose.Schema({
         required: true
     },
     username: {
-
-        require: true,
-        type: String
+        type: String,
+        required: true,
+        unique: true,  
     },
     password: {
-        require: true,
-        type:String
+        type:String,
+        required: true
     }
 });
+
 
 personSchema.pre('save', async function(next) {
     const person = this;
@@ -49,17 +50,9 @@ personSchema.pre('save', async function(next) {
     }
 
     try {
-        //hash password generation
         const salt = await bcrypt.genSalt(10);
-
-        //hash password
         const hashedPassword = await bcrypt.hash(person.password, salt);
-
-        //override the plain password with the hashed password
-
         person.password = hashedPassword;
-
-        
         next();
     } catch (error) {
         return next(error);
@@ -68,15 +61,11 @@ personSchema.pre('save', async function(next) {
 
 personSchema.methods.comparePassword = async function (candidatePassword) {
     try {
-        const isMatch = await bcrypt.compare(candidatePassword, this.password);
-        return isMatch;
+        return await bcrypt.compare(candidatePassword, this.password);
     } catch (error) {
         throw error;
     }
-}
+};
 
-
-//Create Model
-
-const Person = mongoose.model('Person',personSchema);
+const Person = mongoose.model('Person', personSchema);
 module.exports = Person;
