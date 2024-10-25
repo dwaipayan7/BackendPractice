@@ -1,39 +1,23 @@
-const { config } = require('dotenv');
 const jwt = require('jsonwebtoken');
-config()
 
-const jwtAuthMiddleware = (req, res, next) =>{
+// Middleware for authenticating JWT tokens
+const jwtAuthMiddleware = (req, res, next) => {
+    const token = req.headers.authorization && req.headers.authorization.split(' ')[1]; // Extract the token from the Authorization header
 
-    const authorization = req.headers.authorization;
-    if (!authorization) {
-        return res.status(401).json({ message: 'No token provided' });
-
-    }
-
-    const token = req.headers.authorization.split(' ')[1];
-    
-    if(!token){
-        return res.status(401).json({message: 'No token provided.'});
+    if (!token) {
+        return res.status(401).json({ error: 'Token not provided' });
     }
 
     try {
-        //payload decoded
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-//Payload value
-      req.user = decoded
-      next();
-
+        // Verify the token and extract the payload
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        req.data = decoded;  // Attach the decoded payload to req.data
+        next();
     } catch (error) {
-        console.log(error);
-        res.status(401).json({message: 'Invalid token.'});
-
+        return res.status(403).json({ error: 'Invalid or expired token' });
     }
-}
+};
 
-//generate token
-
-const generateToken = (userData) =>{
-    return jwt.sign({user: userData}, process.env.JWT_SECRET, {expiresIn: '1h'});
-}
-
-module.exports = {jwtAuthMiddleware, generateToken};
+module.exports = {
+    jwtAuthMiddleware
+};

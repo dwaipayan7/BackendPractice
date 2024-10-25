@@ -3,6 +3,27 @@ const router = express.Router();
 const Person = require('../models/Person');
 const {jwtAuthMiddleware, generateToken} = require('../jwt/jwt')
 
+//Profile
+
+router.get('/profile',jwtAuthMiddleware, async(req, res)=>{
+
+    try {
+        const userData = req.data;
+
+        console.log(userData);
+
+        const userId = userData.id;
+        const user = await Person.findById(userId);
+
+        res.status(200).json({user});
+
+    } catch (error) {
+        res.status(500).json({error: 'Error fetching user data'});
+
+    }
+
+});
+
 
 // Signup Route - Prevent duplicate emails
 router.post('/signup', async(req, res) => {
