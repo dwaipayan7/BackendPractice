@@ -68,7 +68,7 @@ router.post('/login', async(req, res) =>{
 
 
 // Fetch All Persons
-router.get('/', async (req, res) => {
+router.get('/',jwtAuthMiddleware, async (req, res) => {
     try {
         const response = await Person.find();
         console.log('Data Fetched');
