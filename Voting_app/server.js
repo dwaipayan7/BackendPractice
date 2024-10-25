@@ -9,6 +9,12 @@ app.use(bodyParser.json());
 
 connectDB();
 
+app.get('/', async(req, res)=>{
+
+res.send("Dwaipayan");
+
+});
+
 app.listen(PORT, ()=>{
     console.log(`Server is running on port ${PORT}`)
 });
