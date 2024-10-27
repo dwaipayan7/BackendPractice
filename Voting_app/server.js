@@ -9,11 +9,17 @@ app.use(bodyParser.json());
 
 connectDB();
 
-app.get('/', async(req, res)=>{
+// app.get('/', async(req, res)=>{
 
-res.send("Dwaipayan");
+// res.send("Dwaipayan");
 
-});
+// });
+
+const userRoutes = require('./routes/userRoutes');
+
+
+app.use('/user',userRoutes);
+
 
 app.listen(PORT, ()=>{
     console.log(`Server is running on port ${PORT}`)
