@@ -105,4 +105,61 @@ router.delete('/:candidateID',jwtAuthMiddleware, async (req, res) => {
     }
 });
 
+router.post('/vote/:candidateID', jwtAuthMiddleware, async (req, res) => {
+    const candidateID = req.params.candidateID;
+    const userID = req.user.id;
+
+    try {
+        // Find candidate by ID
+        const candidate = await Candidate.findById(candidateID);
+        if (!candidate) {
+            return res.status(404).json({ message: 'Candidate Not Found' });
+        }
+
+        // Check if user has already voted (assuming Candidate has a `votes` field that tracks user votes)
+
+        const user = await User.findById(userID);
+        if (!user) {
+             return res.status(404).json({ message: 'User Not Found' });
+        }
+
+    if(user.role == 'admin'){
+        return res.status(403).json({message: 'Admin cannot vote'});
+    }
+
+    candidate.votes.push({user: userID});
+    candidate.voteCount++;
+    await candidate.save()
+
+    user.isVoted = true;
+    await user.save()
+
+        return res.status(200).json({ message: 'Vote successfully recorded' });
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'An error occurred while processing the vote' });
+    }
+});
+
+router.get('/vote/count', async(req, res)=>{
+    try {
+        const candidate = await Candidate.find().sort({voteCount: 'desc'});
+
+        const voteRecord = candidate.map((data) =>{
+            return{
+                party: data.party,
+                count: data.voteCount
+            }
+        });
+
+         return res.status(200).json(voteRecord);
+
+        
+    } catch (error) {
+        res.status(500).json({ error: 'Invalid Vote Count' });
+
+    }
+})
+
 module.exports = router;
