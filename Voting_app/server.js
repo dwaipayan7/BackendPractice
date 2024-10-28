@@ -9,15 +9,13 @@ app.use(bodyParser.json());
 
 connectDB();
 
-const {jwtAuthMiddleware} = require('./jwt/jwt')
-
 const userRoutes = require('./routes/userRoutes');
 const candidateRoutes = require('./routes/candidateRoutes');
 
 
 
 app.use('/user',userRoutes);
-app.use('/candidate',jwtAuthMiddleware,candidateRoutes);
+app.use('/candidate',candidateRoutes);
 
 
 app.listen(PORT, ()=>{
